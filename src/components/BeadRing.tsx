@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 interface BeadRingProps {
   count: number;
   current: number;
-  targetRef: React.RefObject<HTMLElement | null>;
   /**
-   * Identity of the measured element. The card is remounted on every step
-   * change (AnimatePresence mode="wait"), so this must change with it or the
-   * observer stays bound to the detached node.
+   * The measured element itself, tracked with a callback ref. A plain ref object
+   * is not enough: AnimatePresence mode="wait" unmounts and remounts the card on
+   * every step, and a ref object's identity never changes, so observers would
+   * stay bound to a node that no longer exists.
    */
-  depKey?: string | number;
+  targetEl: HTMLElement | null;
   gap?: number;
 }
 
@@ -21,18 +21,16 @@ interface Size {
 export default function BeadRing({
   count,
   current,
-  targetRef,
-  depKey,
+  targetEl,
   gap = 12,
 }: BeadRingProps) {
   const [size, setSize] = useState<Size>({ w: 0, h: 0 });
 
   useEffect(() => {
-    const el = targetRef.current;
-    if (!el) return;
+    if (!targetEl) return;
 
     const measure = () => {
-      const rect = el.getBoundingClientRect();
+      const rect = targetEl.getBoundingClientRect();
       // A detached element reports 0x0. Storing that would unmount the ring,
       // so ignore empty measurements and keep the last good size.
       if (rect.width === 0 || rect.height === 0) return;
@@ -42,9 +40,9 @@ export default function BeadRing({
     measure();
 
     const observer = new ResizeObserver(measure);
-    observer.observe(el);
+    observer.observe(targetEl);
     return () => observer.disconnect();
-  }, [targetRef, depKey, gap]);
+  }, [targetEl, gap]);
 
   if (!size.w || !size.h || count === 0) return null;
 

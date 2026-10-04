@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Loader from './components/Loader';
 import BeadRing from './components/BeadRing';
@@ -9,7 +9,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [direction, setDirection] = useState(0);
   const { language, setLanguage, activeMystery, setActiveMystery, currentStep, setCurrentStep, fontSize, setFontSize } = usePrayerStore();
-  const cardRef = useRef<HTMLDivElement>(null);
+  const [cardEl, setCardEl] = useState<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const today = new Date();
@@ -75,7 +75,7 @@ export default function App() {
               drag="x"
               dragConstraints={{ left: 0, right: 0 }}
               onDragEnd={handleDragEnd}
-              ref={cardRef}
+              ref={setCardEl}
               className="w-full p-8 bg-white rounded-3xl shadow-sm border border-amber-100 cursor-grab"
           >
             <h2 className="text-sm uppercase tracking-widest text-amber-600 mb-2">
@@ -117,8 +117,7 @@ export default function App() {
           <BeadRing
             count={beadCount}
             current={currentStep}
-            targetRef={cardRef}
-            depKey={currentStep}
+            targetEl={cardEl}
           />
         </div>
       </main>
