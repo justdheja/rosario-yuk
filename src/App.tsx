@@ -12,6 +12,32 @@ export default function App() {
   const [direction, setDirection] = useState(0);
   const { language, setLanguage, activeMystery, setActiveMystery, currentStep, setCurrentStep, fontSize, setFontSize } = usePrayerStore();
   const [cardEl, setCardEl] = useState<HTMLDivElement | null>(null);
+  const [installEvent, setInstallEvent] = useState<any>(null);
+  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isInstalled = window.matchMedia('(display-mode: standalone)').matches || (navigator as any).standalone === true;
+
+  useEffect(() => {
+    const onPrompt = (e: Event) => { e.preventDefault(); setInstallEvent(e); };
+    const onInstalled = () => setInstallEvent(null);
+    window.addEventListener('beforeinstallprompt', onPrompt);
+    window.addEventListener('appinstalled', onInstalled);
+    return () => {
+      window.removeEventListener('beforeinstallprompt', onPrompt);
+      window.removeEventListener('appinstalled', onInstalled);
+    };
+  }, []);
+
+  const handleInstall = async () => {
+    if (installEvent) {
+      installEvent.prompt();
+      await installEvent.userChoice;
+      setInstallEvent(null);
+    } else {
+      alert(language === 'id'
+        ? 'Ketuk tombol Bagikan di Safari, lalu pilih "Tambah ke Layar Utama".'
+        : 'Tap the Share button in Safari, then choose "Add to Home Screen".');
+    }
+  };
 
   useEffect(() => {
     const today = new Date();
@@ -67,6 +93,11 @@ export default function App() {
             <button onClick={() => setFontSize('md')} disabled={fontSize === 'md'} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-100 disabled:bg-amber-100 disabled:font-bold">A</button>
             <button onClick={() => setFontSize('lg')} disabled={fontSize === 'lg'} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-100 disabled:bg-amber-100 disabled:font-bold">A+</button>
           </div>
+          {!isInstalled && (installEvent || isIOS) && (
+            <button onClick={handleInstall} className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-full text-sm font-medium transition">
+              {language === 'id' ? 'Pasang' : 'Install'}
+            </button>
+          )}
           <button onClick={() => setLanguage(language === 'id' ? 'en' : 'id')} className="bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-full text-sm font-medium transition">
             {language === 'id' ? 'English' : 'Bahasa'}
           </button>
