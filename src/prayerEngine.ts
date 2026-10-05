@@ -29,6 +29,14 @@ export const PRAYER_TEXTS = {
     id: 'Salam, ya Ratu, Bunda yang bertakhta dalam kasih sayang, ya kehidupan, penghiburan, dan harapan kami, salam. Kepada-Mulah kami berseru, anak-anak Hawa yang terbuang; kepada-Mulah kami memanjatkan permohonan kami, dengan berkeluh kesah di lembah duka ini. Maka tunjukkanlah kepada kami, ya Pengantara kami, wajah-Mu yang penuh kasih setelah masa pembuangan kami ini berakhir, dan tunjukkanlah kepada kami Yesus, buah rahim-Mu yang terberkati, ya Perawan Maria yang murah hati, ya Bunda yang penuh kasih, ya Bunda yang manis. Amin.', 
     en: 'Hail, holy Queen, Mother of mercy, our life, our sweetness and our hope, to thee do we cry, poor banished children of Eve: to thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious Advocate, thine eyes of mercy toward us, and after this our exile, show unto us the blessed fruit of thy womb, Jesus, O clement, O loving, O sweet Virgin Mary. Amen.' 
   },
+  rosaryVersicle: {
+    id: 'V. Doakanlah kami, ya Santa Bunda Allah. R. Supaya kami layak menerima janji Kristus.',
+    en: 'V. Pray for us, O holy Mother of God. R. That we may be made worthy of the promises of Christ.'
+  },
+  rosaryConcluding: {
+    id: 'Ya Allah, Putra-Mu yang tunggal telah menyediakan bagi kami pahala hidup kekal melalui hidup, wafat, dan kebangkitan-Nya. Kami mohon, semoga dengan merenungkan misteri-misteri ini dalam rosario suci Santa Perawan Maria, kami meneladan apa yang terkandung di dalamnya dan memperoleh apa yang dijanjikan. Demi Kristus, Tuhan kami. Amin.',
+    en: 'O God, whose only-begotten Son, by his life, death, and resurrection, has purchased for us the rewards of eternal life, grant, we beseech thee, that meditating on these mysteries of the most holy Rosary of the Blessed Virgin Mary, we may imitate what they contain and obtain what they promise. Through the same Christ our Lord. Amen.'
+  },
 };
 
 export const PRAYER_LABELS: Record<keyof typeof PRAYER_TEXTS, { id: string; en: string }> = {
@@ -39,6 +47,8 @@ export const PRAYER_LABELS: Record<keyof typeof PRAYER_TEXTS, { id: string; en: 
   gloryBe: { id: 'Kemuliaan', en: 'Glory Be' },
   fatimaPrayer: { id: 'Doa Fatima', en: 'Fatima Prayer' },
   hailHolyQueen: { id: 'Salam Ya Ratu', en: 'Hail Holy Queen' },
+  rosaryVersicle: { id: 'Doa Singkat', en: 'Versicle' },
+  rosaryConcluding: { id: 'Doa Penutup', en: 'Concluding Prayer' },
 };
 
 const ORDINAL_SUFFIX = ['st', 'nd', 'rd', 'th', 'th'];
@@ -58,18 +68,21 @@ export const ROSARY_STRUCTURE = [
     const n = i + 1;
     const en = `${n}${ORDINAL_SUFFIX[i]} Decade`;
     return [
-      { id: `d${n}-meditation`, title: { id: `Peristiwa ${n}`, en }, prayers: ['ourFather'] },
+      { id: `d${n}-announce`, decade: n, title: { id: `Peristiwa ${n}`, en }, prayers: [] as string[] },
+      { id: `d${n}-meditation`, decade: n, title: { id: `Peristiwa ${n} (Bapa Kami)`, en: `${en} (Our Father)` }, prayers: ['ourFather'] },
       ...Array.from({ length: 10 }).map((_, j) => ({
         id: `d${n}-hail-${j+1}`,
+        decade: n,
         title: { id: `Peristiwa ${n} (${j+1}/10)`, en: `${en} (${j+1}/10)` },
         prayers: ['hailMary']
       })),
-      { id: `d${n}-end`, title: { id: `Peristiwa ${n} (Penutup)`, en: `${en} (Closing)` }, prayers: ['gloryBe', 'fatimaPrayer'] }
+      { id: `d${n}-end`, decade: n, title: { id: `Peristiwa ${n} (Penutup)`, en: `${en} (Closing)` }, prayers: ['gloryBe', 'fatimaPrayer'] }
     ];
   }),
   
   // Closing
   { id: 'hail-holy-queen', title: { id: 'Salam Ya Ratu', en: 'Hail Holy Queen' }, prayers: ['hailHolyQueen'] },
+  { id: 'closing-prayer', title: { id: 'Doa Penutup', en: 'Concluding Prayer' }, prayers: ['rosaryVersicle', 'rosaryConcluding'] },
   { id: 'sign-close', title: { id: 'Penutup', en: 'Closing' }, prayers: ['signOfTheCross'] }
 ];
 

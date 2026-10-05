@@ -42,7 +42,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-stone-50 p-6 text-stone-900 transition-all duration-300 overflow-hidden flex flex-col items-center">
       <header className="w-full max-w-2xl flex justify-between items-center mb-8">
-        <h1 className="text-2xl font-serif font-bold text-amber-900">Rosario-Yuk</h1>
+        <h1>
+          <img src={`${import.meta.env.BASE_URL}icon.png`} alt="Rosario-Yuk" className="h-12 w-12 object-contain" />
+        </h1>
         <div className="flex gap-2">
           <div className="flex items-center gap-1 bg-white rounded-full p-1 shadow-sm border border-stone-200">
             <button onClick={() => setFontSize('sm')} disabled={fontSize === 'sm'} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-100 disabled:bg-amber-100 disabled:font-bold">A-</button>
@@ -76,15 +78,22 @@ export default function App() {
             <h3 className="text-3xl font-serif text-stone-900 mb-8">
               {currentSection.title[language]}
             </h3>
-            
-            <div className="text-left bg-stone-50 p-6 rounded-xl mb-8 space-y-4">
-              {currentSection.prayers.map((p, idx) => {
-                const key = p as keyof typeof PRAYER_TEXTS;
-                return (
-                  <p key={idx}><strong>{PRAYER_LABELS[key][language]}:</strong> {PRAYER_TEXTS[key][language]}</p>
-                );
-              })}
-            </div>
+            {mystery && currentSection.decade && (
+              <p className="text-xl font-serif text-amber-800 mb-8">
+                {mystery.decades[currentSection.decade - 1].title[language]}
+              </p>
+            )}
+
+            {currentSection.prayers.length > 0 && (
+              <div className="text-left bg-stone-50 p-6 rounded-xl mb-8 space-y-4">
+                {currentSection.prayers.map((p, idx) => {
+                  const key = p as keyof typeof PRAYER_TEXTS;
+                  return (
+                    <p key={idx}><strong>{PRAYER_LABELS[key][language]}:</strong> {PRAYER_TEXTS[key][language]}</p>
+                  );
+                })}
+              </div>
+            )}
             <p className="text-stone-400 text-sm italic">Swipe to navigate</p>
           </motion.div>
           </AnimatePresence>
