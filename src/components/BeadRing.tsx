@@ -99,9 +99,27 @@ export default function BeadRing({
       aria-hidden="true"
     >
       {Array.from({ length: count }).map((_, index) => {
-        const { x, y } = pointAt((index + 0.5) / count);
-        const isCurrent = index === current;
+        // First and last steps (opening/closing Sign of the Cross) share one ♰ at the ring's start.
+        if (index === count - 1 && count > 1) return null;
+        const isCross = index === 0;
+        const { x, y } = pointAt(index / Math.max(1, count - 1));
+        const isCurrent = isCross ? current === 0 || current === count - 1 : index === current;
         const isDone = index < current;
+
+        if (isCross) {
+          return (
+            <span
+              key={index}
+              style={{ left: `${x}px`, top: `${y}px` }}
+              className={[
+                'absolute -translate-x-1/2 -translate-y-1/2 select-none text-lg leading-none transition-all duration-300',
+                isCurrent ? 'scale-150 text-amber-600' : current > 0 ? 'text-amber-300' : 'text-stone-300',
+              ].join(' ')}
+            >
+              ♰
+            </span>
+          );
+        }
 
         return (
           <span
