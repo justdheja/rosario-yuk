@@ -93,13 +93,13 @@ export default function App() {
               {currentSection.title[language]}
             </h3>
             <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain">
+            {renderPrayers(isAnnounce ? currentSection.prayers.filter((p) => p !== 'ourFather') : currentSection.prayers)}
+  
             {mystery && 'decade' in currentSection && (
               <p className="text-base font-serif text-amber-800 mb-4">
                 {mystery.decades[currentSection.decade - 1].title[language]}
               </p>
             )}
-
-            {renderPrayers(isAnnounce ? currentSection.prayers.filter((p) => p !== 'ourFather') : currentSection.prayers)}
 
             {mystery && 'decade' in currentSection && isAnnounce && (() => {
               const decade = mystery.decades[currentSection.decade - 1];
