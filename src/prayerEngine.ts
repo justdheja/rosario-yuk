@@ -60,7 +60,7 @@ export const ROSARY_STRUCTURE = [
       ...Array.from({ length: 10 }).map((_, j) => ({
         id: `d${n}-hail-${j+1}`,
         decade: n,
-        title: { id: `Peristiwa ${n} (${j+1}/10)`, en: `${en} (${j+1}/10)` },
+        title: { id: `Peristiwa ${n} - Salam Maria (${j+1}/10)`, en: `${en} - Hail Mary (${j+1}/10)` },
         prayers: ['hailMary']
       })),
       // The closing prayers of decades 1-4 open the next announce step; only decade 5 needs its own.

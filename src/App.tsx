@@ -89,7 +89,7 @@ export default function App() {
             <h2 className="text-sm uppercase tracking-widest text-amber-600 mb-2 shrink-0">
               {mystery?.name[language]}
             </h2>
-            <h3 className="text-3xl font-serif text-stone-900 mb-6 shrink-0">
+            <h3 className="text-2xl font-serif text-stone-900 mb-6 shrink-0">
               {currentSection.title[language]}
             </h3>
             <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain">
