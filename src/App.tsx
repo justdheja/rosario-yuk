@@ -78,7 +78,7 @@ export default function App() {
             <h3 className="text-3xl font-serif text-stone-900 mb-8">
               {currentSection.title[language]}
             </h3>
-            {mystery && currentSection.decade && (
+            {mystery && 'decade' in currentSection && (
               <p className="text-xl font-serif text-amber-800 mb-8">
                 {mystery.decades[currentSection.decade - 1].title[language]}
               </p>
