@@ -17,7 +17,7 @@ export default function App() {
     const today = new Date();
     const mystery = getMysteryForDay(today);
     setActiveMystery(mystery);
-    
+
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
   }, [setActiveMystery]);
@@ -70,7 +70,7 @@ export default function App() {
           </button>
         </div>
       </header>
-      
+
       <main className={`relative w-full max-w-2xl flex-1 min-h-0 flex flex-col items-center py-6 ${FONT_CLASS[fontSize] ?? 'text-base'}`}>
         <div className="relative w-full flex-1 min-h-0">
           <AnimatePresence mode='wait'>
@@ -85,36 +85,36 @@ export default function App() {
               onDragEnd={handleDragEnd}
               ref={setCardEl}
               className="w-full h-full flex flex-col p-8 bg-white rounded-3xl shadow-sm border border-amber-100 cursor-grab"
-          >
-            <h2 className="text-sm uppercase tracking-widest text-amber-600 mb-2 shrink-0">
-              {mystery?.name[language]}
-            </h2>
-            <h3 className="text-2xl font-serif text-stone-900 mb-6 shrink-0">
-              {currentSection.title[language]}
-            </h3>
-            <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain">
-            {renderPrayers(isAnnounce ? currentSection.prayers.filter((p) => p !== 'ourFather') : currentSection.prayers)}
-  
-            {mystery && 'decade' in currentSection && (
-              <p className="text-base font-serif text-amber-800 mb-4">
-                {mystery.decades[currentSection.decade - 1].title[language]}
-              </p>
-            )}
+            >
+              <h2 className="text-sm uppercase tracking-widest text-amber-600 mb-2 shrink-0">
+                {mystery?.name[language]}
+              </h2>
+              <h3 className="text-2xl font-serif text-stone-900 mb-6 shrink-0">
+                {currentSection.title[language]}
+              </h3>
+              <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain">
+                {renderPrayers(isAnnounce ? currentSection.prayers.filter((p) => p !== 'ourFather') : currentSection.prayers)}
 
-            {mystery && 'decade' in currentSection && isAnnounce && (() => {
-              const decade = mystery.decades[currentSection.decade - 1];
-              return (
-                <div className="text-left bg-amber-50 p-6 rounded-xl mb-8">
-                  <p className="text-sm text-amber-700 mb-2">{decade.ref}</p>
-                  <p>{decade.text}</p>
-                </div>
-              );
-            })()}
+                {mystery && 'decade' in currentSection && isAnnounce && (() => {
+                  const decade = mystery.decades[currentSection.decade - 1];
+                  return (
+                    <>
+                      <p className="text-base font-serif text-amber-800 mb-4">
+                        {mystery.decades[currentSection.decade - 1].title[language]}
+                      </p>
+                      <div className="text-left bg-amber-50 p-6 rounded-xl mb-8">
+                        <p className="text-sm text-amber-700 mb-2">{decade.ref}</p>
+                        <p>{decade.text}</p>
+                      </div>
 
-            {isAnnounce && renderPrayers(['ourFather'])}
-            </div>
-            <p className="text-stone-400 text-sm italic shrink-0 pt-4">Swipe to navigate</p>
-          </motion.div>
+                    </>
+                  );
+                })()}
+
+                {isAnnounce && renderPrayers(['ourFather'])}
+              </div>
+              <p className="text-stone-400 text-sm italic shrink-0 pt-4">Swipe to navigate</p>
+            </motion.div>
           </AnimatePresence>
 
           <BeadRing
