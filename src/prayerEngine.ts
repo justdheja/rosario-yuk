@@ -36,7 +36,7 @@ export const PRAYER_TEXTS = {
 };
 
 export const PRAYER_LABELS: Record<keyof typeof PRAYER_TEXTS, { id: string; en: string }> = {
-  signOfTheCross: { id: 'Tanda Salib', en: 'Sign of the Cross' },
+  signOfTheCross: { id: 'Tanda Salib (♰)', en: 'Sign of the Cross (♰)' },
   apostlesCreed: { id: 'Aku Percaya', en: 'Apostles\' Creed' },
   ourFather: { id: 'Bapa Kami', en: 'Our Father' },
   hailMary: { id: 'Salam Maria', en: 'Hail Mary' },
