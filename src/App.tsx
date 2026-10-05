@@ -78,7 +78,7 @@ export default function App() {
             <h3 className="text-3xl font-serif text-stone-900 mb-6 shrink-0">
               {currentSection.title[language]}
             </h3>
-            <div className="flex-1 min-h-0 overflow-y-auto">
+            <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain">
             {mystery && 'decade' in currentSection && (() => {
               const decade = mystery.decades[currentSection.decade - 1];
               return (
