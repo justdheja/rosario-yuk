@@ -48,6 +48,7 @@ export const ROSARY_STRUCTURE = [
   { id: 'sign', title: { id: 'Tanda Salib', en: 'Sign of the Cross' }, prayers: ['signOfTheCross'] },
   { id: 'creed', title: { id: 'Aku Percaya', en: 'Apostles\' Creed' }, prayers: ['apostlesCreed'] },
   { id: 'glory-be-open', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe'] },
+  { id: 'praised', title: { id: 'Terpujilah', en: 'Praised Be' }, prayers: ['praised'] },
   { id: 'our-father-open', title: { id: 'Bapa Kami', en: 'Our Father' }, prayers: ['ourFather'] },
   { id: 'hail-mary-1', title: { id: 'Salam Putri Allah Bapa', en: 'Hail, Daughter of God the Father' }, prayers: ['hailMary'] },
   { id: 'hail-mary-2', title: { id: 'Salam Bunda Allah Putra', en: 'Hail, Mother of God the Son' }, prayers: ['hailMary'] },
