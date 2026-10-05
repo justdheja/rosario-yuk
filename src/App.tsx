@@ -95,7 +95,7 @@ export default function App() {
           </div>
           {!isInstalled && (installEvent || isIOS) && (
             <button onClick={handleInstall} className="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-full text-sm font-medium transition">
-              {language === 'id' ? 'Pasang' : 'Install'}
+              Install
             </button>
           )}
           <button onClick={() => setLanguage(language === 'id' ? 'en' : 'id')} className="bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-full text-sm font-medium transition">
