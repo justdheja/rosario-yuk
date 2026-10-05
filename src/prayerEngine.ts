@@ -29,6 +29,10 @@ export const PRAYER_TEXTS = {
     id: 'Terpujilah nama Yesus, Maria dan Yusuf, sekarang dan selama-lamanya. Amin.',
     en: 'Praised be the names of Jesus, Mary and Joseph, now and forever. Amen.'
   },
+  intention: {
+    id: 'Doakan ujud pribadi anda (jika ada)',
+    en: 'Pray your personal intention (if any)'
+  },
 };
 
 export const PRAYER_LABELS: Record<keyof typeof PRAYER_TEXTS, { id: string; en: string }> = {
@@ -39,6 +43,7 @@ export const PRAYER_LABELS: Record<keyof typeof PRAYER_TEXTS, { id: string; en: 
   gloryBe: { id: 'Kemuliaan', en: 'Glory Be' },
   fatimaPrayer: { id: 'Doa Fatima', en: 'Fatima Prayer' },
   praised: { id: 'Terpujilah', en: 'Praised Be' },
+  intention: { id: 'Ujud', en: 'Intention' }
 };
 
 const ORDINAL_SUFFIX = ['st', 'nd', 'rd', 'th', 'th'];
@@ -62,14 +67,12 @@ export const ROSARY_STRUCTURE = [
         decade: n,
         title: { id: `Peristiwa ${n} - Salam Maria (${j+1}/10)`, en: `${en} - Hail Mary (${j+1}/10)` },
         prayers: ['hailMary']
-      })),
-      // The closing prayers of decades 1-4 open the next announce step; only decade 5 needs its own.
-      ...(n === 5 ? [{ id: `d${n}-end`, decade: n, title: { id: `Peristiwa ${n} (Penutup)`, en: `${en} (Closing)` }, prayers: ['gloryBe', 'praised', 'fatimaPrayer'] }] : [])
+      }))
     ];
   }),
 
   // Closing
-  { id: 'sign-close', title: { id: 'Tanda Salib', en: 'Sign of the Cross' }, prayers: ['signOfTheCross'] }
+  { id: 'sign-close', title: { id: 'Penutup - Tanda Salib', en: 'Closing - Sign of the Cross' }, prayers: ['gloryBe', 'praised', 'fatimaPrayer', 'intention', 'signOfTheCross'] }
 ];
 
 export const getMysteryForDay = (date: Date): MysteryType => {

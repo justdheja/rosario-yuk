@@ -43,7 +43,9 @@ export default function App() {
       <div className="text-left bg-stone-50 p-6 rounded-xl mb-8 space-y-4">
         {prayers.map((p, idx) => {
           const key = p as keyof typeof PRAYER_TEXTS;
-          return (
+          return key === 'intention' ? (
+            <p key={idx}><i>{PRAYER_TEXTS[key][language]}</i></p>
+          ) : (
             <p key={idx}><strong>{PRAYER_LABELS[key][language]}:</strong> {PRAYER_TEXTS[key][language]}</p>
           );
         })}
