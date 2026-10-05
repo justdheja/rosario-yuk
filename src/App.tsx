@@ -37,7 +37,21 @@ export default function App() {
     }
   };
 
+  const isAnnounce = currentSection.id.endsWith('-announce');
+  const renderPrayers = (prayers: string[]) =>
+    prayers.length > 0 && (
+      <div className="text-left bg-stone-50 p-6 rounded-xl mb-8 space-y-4">
+        {prayers.map((p, idx) => {
+          const key = p as keyof typeof PRAYER_TEXTS;
+          return (
+            <p key={idx}><strong>{PRAYER_LABELS[key][language]}:</strong> {PRAYER_TEXTS[key][language]}</p>
+          );
+        })}
+      </div>
+    );
+
   const beadCount = ROSARY_STRUCTURE.length;
+  const largeBeads = ROSARY_STRUCTURE.map((s) => s.id.includes('-announce') || s.id.includes('glory-be-open'));
 
   return (
     <div className="h-dvh bg-stone-50 p-6 text-stone-900 transition-all duration-300 overflow-hidden flex flex-col items-center">
@@ -79,33 +93,25 @@ export default function App() {
               {currentSection.title[language]}
             </h3>
             <div className="flex-1 min-h-0 overflow-y-auto touch-pan-y overscroll-contain">
-            {mystery && 'decade' in currentSection && (() => {
+            {mystery && 'decade' in currentSection && (
+              <p className="text-base font-serif text-amber-800 mb-4">
+                {mystery.decades[currentSection.decade - 1].title[language]}
+              </p>
+            )}
+
+            {renderPrayers(isAnnounce ? currentSection.prayers.filter((p) => p !== 'ourFather') : currentSection.prayers)}
+
+            {mystery && 'decade' in currentSection && isAnnounce && (() => {
               const decade = mystery.decades[currentSection.decade - 1];
               return (
-                <>
-                  <p className="text-base font-serif text-amber-800 mb-4">
-                    {decade.title[language]}
-                  </p>
-                  {currentSection.id.endsWith('-announce') && (
-                    <div className="text-left bg-amber-50 p-6 rounded-xl mb-8">
-                      <p className="text-sm text-amber-700 mb-2">{decade.ref}</p>
-                      <p>{decade.text}</p>
-                    </div>
-                  )}
-                </>
+                <div className="text-left bg-amber-50 p-6 rounded-xl mb-8">
+                  <p className="text-sm text-amber-700 mb-2">{decade.ref}</p>
+                  <p>{decade.text}</p>
+                </div>
               );
             })()}
 
-            {currentSection.prayers.length > 0 && (
-              <div className="text-left bg-stone-50 p-6 rounded-xl mb-8 space-y-4">
-                {currentSection.prayers.map((p, idx) => {
-                  const key = p as keyof typeof PRAYER_TEXTS;
-                  return (
-                    <p key={idx}><strong>{PRAYER_LABELS[key][language]}:</strong> {PRAYER_TEXTS[key][language]}</p>
-                  );
-                })}
-              </div>
-            )}
+            {isAnnounce && renderPrayers(['ourFather'])}
             </div>
             <p className="text-stone-400 text-sm italic shrink-0 pt-4">Swipe to navigate</p>
           </motion.div>
@@ -113,6 +119,7 @@ export default function App() {
 
           <BeadRing
             count={beadCount}
+            large={largeBeads}
             current={currentStep}
             targetEl={cardEl}
           />

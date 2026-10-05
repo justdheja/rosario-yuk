@@ -11,6 +11,8 @@ interface BeadRingProps {
    */
   targetEl: HTMLElement | null;
   gap?: number;
+  /** Per-step flags: true renders a bigger bead (Our Father beads on a real rosary). */
+  large?: boolean[];
 }
 
 interface Size {
@@ -23,6 +25,7 @@ export default function BeadRing({
   current,
   targetEl,
   gap = 12,
+  large = [],
 }: BeadRingProps) {
   const [size, setSize] = useState<Size>({ w: 0, h: 0 });
 
@@ -126,7 +129,7 @@ export default function BeadRing({
             key={index}
             style={{ left: `${x}px`, top: `${y}px` }}
             className={[
-              'absolute h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-all duration-300',
+              `absolute ${large[index] ? 'h-4 w-4' : 'h-2.5 w-2.5'} -translate-x-1/2 -translate-y-1/2 rounded-full border-2 transition-all duration-300`,
               isCurrent
                 ? 'scale-150 border-amber-600 bg-amber-600 shadow-md shadow-amber-300'
                 : isDone

@@ -45,27 +45,26 @@ const ORDINAL_SUFFIX = ['st', 'nd', 'rd', 'th', 'th'];
 
 export const ROSARY_STRUCTURE = [
   // Opening
-  { id: 'sign', title: { id: 'Tanda Salib', en: 'Sign of the Cross' }, prayers: ['signOfTheCross', 'apostlesCreed'] },
+  { id: 'sign', title: { id: 'Pembukaan (Tanda Salib)', en: 'Opening (Sign of the Cross)' }, prayers: ['signOfTheCross', 'apostlesCreed'] },
   { id: 'glory-be-open', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe', 'praised', 'ourFather'] },
   { id: 'hail-mary-1', title: { id: 'Salam Putri Allah Bapa', en: 'Hail, Daughter of God the Father' }, prayers: ['hailMary'] },
   { id: 'hail-mary-2', title: { id: 'Salam Bunda Allah Putra', en: 'Hail, Mother of God the Son' }, prayers: ['hailMary'] },
   { id: 'hail-mary-3', title: { id: 'Salam Mempelai Allah Roh Kudus', en: 'Hail, Spouse of God the Holy Spirit' }, prayers: ['hailMary'] },
-  { id: 'glory-be-open-2', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe', 'praised', 'fatimaPrayer'] },
-
+  
   // Decades
   ...Array.from({ length: 5 }).flatMap((_, i) => {
     const n = i + 1;
     const en = `${n}${ORDINAL_SUFFIX[i]} Decade`;
     return [
-      { id: `d${n}-announce`, decade: n, title: { id: `Peristiwa ${n}`, en }, prayers: [] as string[] },
-      { id: `d${n}-our-father`, decade: n, title: { id: `Peristiwa ${n} (Bapa Kami)`, en: `${en} (Our Father)` }, prayers: ['ourFather'] },
+      { id: `d${n}-announce`, decade: n, title: { id: `Peristiwa ${n}`, en }, prayers: ['gloryBe', 'praised', 'fatimaPrayer', 'ourFather'] },
       ...Array.from({ length: 10 }).map((_, j) => ({
         id: `d${n}-hail-${j+1}`,
         decade: n,
         title: { id: `Peristiwa ${n} (${j+1}/10)`, en: `${en} (${j+1}/10)` },
         prayers: ['hailMary']
       })),
-      { id: `d${n}-end`, decade: n, title: { id: `Peristiwa ${n} (Penutup)`, en: `${en} (Closing)` }, prayers: ['gloryBe', 'praised', 'fatimaPrayer'] }
+      // The closing prayers of decades 1-4 open the next announce step; only decade 5 needs its own.
+      ...(n === 5 ? [{ id: `d${n}-end`, decade: n, title: { id: `Peristiwa ${n} (Penutup)`, en: `${en} (Closing)` }, prayers: ['gloryBe', 'praised', 'fatimaPrayer'] }] : [])
     ];
   }),
 
