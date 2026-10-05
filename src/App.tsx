@@ -52,7 +52,7 @@ export default function App() {
             <button onClick={() => setFontSize('lg')} disabled={fontSize === 'lg'} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-stone-100 disabled:bg-amber-100 disabled:font-bold">A+</button>
           </div>
           <button onClick={() => setLanguage(language === 'id' ? 'en' : 'id')} className="bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-full text-sm font-medium transition">
-            {language === 'id' ? 'English' : 'Bahasa Indonesia'}
+            {language === 'id' ? 'English' : 'Bahasa'}
           </button>
         </div>
       </header>
