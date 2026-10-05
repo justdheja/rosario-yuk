@@ -45,15 +45,12 @@ const ORDINAL_SUFFIX = ['st', 'nd', 'rd', 'th', 'th'];
 
 export const ROSARY_STRUCTURE = [
   // Opening
-  { id: 'sign', title: { id: 'Tanda Salib', en: 'Sign of the Cross' }, prayers: ['signOfTheCross'] },
-  { id: 'creed', title: { id: 'Aku Percaya', en: 'Apostles\' Creed' }, prayers: ['apostlesCreed'] },
-  { id: 'glory-be-open', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe'] },
-  { id: 'praised', title: { id: 'Terpujilah', en: 'Praised Be' }, prayers: ['praised'] },
-  { id: 'our-father-open', title: { id: 'Bapa Kami', en: 'Our Father' }, prayers: ['ourFather'] },
+  { id: 'sign', title: { id: 'Tanda Salib', en: 'Sign of the Cross' }, prayers: ['signOfTheCross', 'apostlesCreed'] },
+  { id: 'glory-be-open', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe', 'praised', 'ourFather'] },
   { id: 'hail-mary-1', title: { id: 'Salam Putri Allah Bapa', en: 'Hail, Daughter of God the Father' }, prayers: ['hailMary'] },
   { id: 'hail-mary-2', title: { id: 'Salam Bunda Allah Putra', en: 'Hail, Mother of God the Son' }, prayers: ['hailMary'] },
   { id: 'hail-mary-3', title: { id: 'Salam Mempelai Allah Roh Kudus', en: 'Hail, Spouse of God the Holy Spirit' }, prayers: ['hailMary'] },
-  { id: 'glory-be-open-2', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe'] },
+  { id: 'glory-be-open-2', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe', 'praised', 'fatimaPrayer'] },
 
   // Decades
   ...Array.from({ length: 5 }).flatMap((_, i) => {
