@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Loader from './components/Loader';
 import BeadRing from './components/BeadRing';
 import { usePrayerStore } from './store';
-import { getMysteryForDay, MYSTERY_DATA, PRAYER_TEXTS, ROSARY_STRUCTURE } from './prayerEngine';
+import { getMysteryForDay, MYSTERY_DATA, PRAYER_LABELS, PRAYER_TEXTS, ROSARY_STRUCTURE } from './prayerEngine';
+
+const FONT_CLASS = { sm: 'text-sm', md: 'text-base', lg: 'text-lg', xl: 'text-xl' };
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -35,16 +37,6 @@ export default function App() {
     }
   };
 
-  const getFontSizeClass = () => {
-    switch (fontSize) {
-      case 'sm': return 'text-sm';
-      case 'md': return 'text-base';
-      case 'lg': return 'text-lg';
-      case 'xl': return 'text-xl';
-      default: return 'text-base';
-    }
-  };
-
   const beadCount = ROSARY_STRUCTURE.length;
 
   return (
@@ -63,7 +55,7 @@ export default function App() {
         </div>
       </header>
       
-      <main className={`relative w-full max-w-2xl flex flex-col items-center py-10 ${getFontSizeClass()}`}>
+      <main className={`relative w-full max-w-2xl flex flex-col items-center py-10 ${FONT_CLASS[fontSize] ?? 'text-base'}`}>
         <div className="relative w-full">
           <AnimatePresence mode='wait'>
             <motion.div
@@ -87,26 +79,9 @@ export default function App() {
             
             <div className="text-left bg-stone-50 p-6 rounded-xl mb-8 space-y-4">
               {currentSection.prayers.map((p, idx) => {
-                let label = '';
-                if (language === 'id') {
-                  if (p === 'signOfTheCross') label = 'Tanda Salib';
-                  else if (p === 'apostlesCreed') label = 'Aku Percaya';
-                  else if (p === 'ourFather') label = 'Bapa Kami';
-                  else if (p === 'hailMary') label = 'Salam Maria';
-                  else if (p === 'gloryBe') label = 'Kemuliaan';
-                  else if (p === 'fatimaPrayer') label = 'Doa Fatima';
-                  else if (p === 'hailHolyQueen') label = 'Salam Ya Ratu';
-                } else {
-                  if (p === 'signOfTheCross') label = 'Sign of the Cross';
-                  else if (p === 'apostlesCreed') label = 'Apostles\' Creed';
-                  else if (p === 'ourFather') label = 'Our Father';
-                  else if (p === 'hailMary') label = 'Hail Mary';
-                  else if (p === 'gloryBe') label = 'Glory Be';
-                  else if (p === 'fatimaPrayer') label = 'Fatima Prayer';
-                  else if (p === 'hailHolyQueen') label = 'Hail Holy Queen';
-                }
+                const key = p as keyof typeof PRAYER_TEXTS;
                 return (
-                  <p key={idx}><strong>{label}:</strong> {PRAYER_TEXTS[p as keyof typeof PRAYER_TEXTS][language]}</p>
+                  <p key={idx}><strong>{PRAYER_LABELS[key][language]}:</strong> {PRAYER_TEXTS[key][language]}</p>
                 );
               })}
             </div>

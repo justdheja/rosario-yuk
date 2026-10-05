@@ -31,6 +31,18 @@ export const PRAYER_TEXTS = {
   },
 };
 
+export const PRAYER_LABELS: Record<keyof typeof PRAYER_TEXTS, { id: string; en: string }> = {
+  signOfTheCross: { id: 'Tanda Salib', en: 'Sign of the Cross' },
+  apostlesCreed: { id: 'Aku Percaya', en: 'Apostles\' Creed' },
+  ourFather: { id: 'Bapa Kami', en: 'Our Father' },
+  hailMary: { id: 'Salam Maria', en: 'Hail Mary' },
+  gloryBe: { id: 'Kemuliaan', en: 'Glory Be' },
+  fatimaPrayer: { id: 'Doa Fatima', en: 'Fatima Prayer' },
+  hailHolyQueen: { id: 'Salam Ya Ratu', en: 'Hail Holy Queen' },
+};
+
+const ORDINAL_SUFFIX = ['st', 'nd', 'rd', 'th', 'th'];
+
 export const ROSARY_STRUCTURE = [
   // Opening
   { id: 'sign', title: { id: 'Pembukaan', en: 'Opening' }, prayers: ['signOfTheCross'] },
@@ -42,15 +54,19 @@ export const ROSARY_STRUCTURE = [
   { id: 'glory-be', title: { id: 'Kemuliaan', en: 'Glory Be' }, prayers: ['gloryBe'] },
   
   // Decades
-  ...Array.from({ length: 5 }).flatMap((_, i) => [
-    { id: `d${i+1}-meditation`, title: { id: `Peristiwa ${i+1}`, en: `${i+1}${i===0?'st':i===1?'nd':i===2?'rd':'th'} Decade` }, prayers: ['ourFather'] },
-    ...Array.from({ length: 10 }).map((_, j) => ({
-      id: `d${i+1}-hail-${j+1}`, 
-      title: { id: `Peristiwa ${i+1} (${j+1}/10)`, en: `${i+1}${i===0?'st':i===1?'nd':i===2?'rd':'th'} Decade (${j+1}/10)` }, 
-      prayers: ['hailMary'] 
-    })),
-    { id: `d${i+1}-end`, title: { id: `Peristiwa ${i+1} (Penutup)`, en: `${i+1}${i===0?'st':i===1?'nd':i===2?'rd':'th'} Decade (Closing)` }, prayers: ['gloryBe', 'fatimaPrayer'] }
-  ]),
+  ...Array.from({ length: 5 }).flatMap((_, i) => {
+    const n = i + 1;
+    const en = `${n}${ORDINAL_SUFFIX[i]} Decade`;
+    return [
+      { id: `d${n}-meditation`, title: { id: `Peristiwa ${n}`, en }, prayers: ['ourFather'] },
+      ...Array.from({ length: 10 }).map((_, j) => ({
+        id: `d${n}-hail-${j+1}`,
+        title: { id: `Peristiwa ${n} (${j+1}/10)`, en: `${en} (${j+1}/10)` },
+        prayers: ['hailMary']
+      })),
+      { id: `d${n}-end`, title: { id: `Peristiwa ${n} (Penutup)`, en: `${en} (Closing)` }, prayers: ['gloryBe', 'fatimaPrayer'] }
+    ];
+  }),
   
   // Closing
   { id: 'hail-holy-queen', title: { id: 'Salam Ya Ratu', en: 'Hail Holy Queen' }, prayers: ['hailHolyQueen'] },
