@@ -40,8 +40,8 @@ export default function App() {
   const beadCount = ROSARY_STRUCTURE.length;
 
   return (
-    <div className="min-h-screen bg-stone-50 p-6 text-stone-900 transition-all duration-300 overflow-hidden flex flex-col items-center">
-      <header className="w-full max-w-2xl flex justify-between items-center mb-8">
+    <div className="h-dvh bg-stone-50 p-6 text-stone-900 transition-all duration-300 overflow-hidden flex flex-col items-center">
+      <header className="w-full max-w-2xl flex justify-between items-center mb-4 shrink-0">
         <h1>
           <img src={`${import.meta.env.BASE_URL}icon.png`} alt="Rosario-Yuk" className="h-12 w-12 object-contain" />
         </h1>
@@ -57,8 +57,8 @@ export default function App() {
         </div>
       </header>
       
-      <main className={`relative w-full max-w-2xl flex flex-col items-center py-10 ${FONT_CLASS[fontSize] ?? 'text-base'}`}>
-        <div className="relative w-full">
+      <main className={`relative w-full max-w-2xl flex-1 min-h-0 flex flex-col items-center py-6 ${FONT_CLASS[fontSize] ?? 'text-base'}`}>
+        <div className="relative w-full flex-1 min-h-0">
           <AnimatePresence mode='wait'>
             <motion.div
               key={currentStep}
@@ -70,19 +70,20 @@ export default function App() {
               dragConstraints={{ left: 0, right: 0 }}
               onDragEnd={handleDragEnd}
               ref={setCardEl}
-              className="w-full p-8 bg-white rounded-3xl shadow-sm border border-amber-100 cursor-grab"
+              className="w-full h-full flex flex-col p-8 bg-white rounded-3xl shadow-sm border border-amber-100 cursor-grab"
           >
-            <h2 className="text-sm uppercase tracking-widest text-amber-600 mb-2">
+            <h2 className="text-sm uppercase tracking-widest text-amber-600 mb-2 shrink-0">
               {mystery?.name[language]}
             </h2>
-            <h3 className="text-3xl font-serif text-stone-900 mb-8">
+            <h3 className="text-3xl font-serif text-stone-900 mb-6 shrink-0">
               {currentSection.title[language]}
             </h3>
+            <div className="flex-1 min-h-0 overflow-y-auto">
             {mystery && 'decade' in currentSection && (() => {
               const decade = mystery.decades[currentSection.decade - 1];
               return (
                 <>
-                  <p className="text-xl font-serif text-amber-800 mb-8">
+                  <p className="text-base font-serif text-amber-800 mb-4">
                     {decade.title[language]}
                   </p>
                   {currentSection.id.endsWith('-announce') && (
@@ -105,7 +106,8 @@ export default function App() {
                 })}
               </div>
             )}
-            <p className="text-stone-400 text-sm italic">Swipe to navigate</p>
+            </div>
+            <p className="text-stone-400 text-sm italic shrink-0 pt-4">Swipe to navigate</p>
           </motion.div>
           </AnimatePresence>
 
