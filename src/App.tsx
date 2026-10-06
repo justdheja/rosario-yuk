@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Loader from './components/Loader';
 import BeadRing from './components/BeadRing';
+import SettingsModal from './components/SettingsModal';
 import { usePrayerStore } from './store';
 import { getMysteryForDay, MYSTERY_DATA, PRAYER_LABELS, PRAYER_TEXTS, ROSARY_STRUCTURE } from './prayerEngine';
 
@@ -10,7 +11,8 @@ const FONT_CLASS = { sm: 'text-sm', md: 'text-base', lg: 'text-lg', xl: 'text-xl
 export default function App() {
   const [loading, setLoading] = useState(true);
   const [direction, setDirection] = useState(0);
-  const { language, setLanguage, activeMystery, setActiveMystery, currentStep, setCurrentStep, fontSize, setFontSize } = usePrayerStore();
+  const { language, setLanguage, activeMystery, setActiveMystery, currentStep, setCurrentStep, fontSize, setFontSize, mysteryOverride, setMysteryOverride } = usePrayerStore();
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [cardEl, setCardEl] = useState<HTMLDivElement | null>(null);
   const [installEvent, setInstallEvent] = useState<any>(null);
   const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -40,13 +42,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    const today = new Date();
-    const mystery = getMysteryForDay(today);
-    setActiveMystery(mystery);
+    setActiveMystery(mysteryOverride ?? getMysteryForDay(new Date()));
 
     const timer = setTimeout(() => setLoading(false), 1500);
     return () => clearTimeout(timer);
-  }, [setActiveMystery]);
+  }, [setActiveMystery]); // override changes are applied by onSave, not re-run here
 
   if (loading) return <Loader />;
 
@@ -98,6 +98,11 @@ export default function App() {
               Install
             </button>
           )}
+          <button onClick={() => setSettingsOpen(true)} aria-label={language === 'id' ? 'Pengaturan' : 'Settings'} className="w-10 h-10 flex items-center justify-center rounded-full bg-white border border-stone-200 shadow-sm hover:bg-stone-100 transition">
+            <svg viewBox="0 0 24 24" className="w-5 h-5 text-stone-500" fill="currentColor" stroke="currentColor" strokeWidth="1" strokeLinejoin="round" fillRule="evenodd" aria-hidden="true">
+              <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3h0a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5h0a1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8v0a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1zM15 12a3 3 0 1 0-6 0 3 3 0 1 0 6 0z" />
+            </svg>
+          </button>
           <button onClick={() => setLanguage(language === 'id' ? 'en' : 'id')} className="bg-amber-100 hover:bg-amber-200 px-4 py-2 rounded-full text-sm font-medium transition">
             {language === 'id' ? 'English' : 'Bahasa'}
           </button>
@@ -158,6 +163,16 @@ export default function App() {
           />
         </div>
       </main>
+      <SettingsModal
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        language={language}
+        value={mysteryOverride}
+        onSave={(m) => {
+          setMysteryOverride(m);
+          setActiveMystery(m ?? getMysteryForDay(new Date()));
+        }}
+      />
     </div>
   );
 }

@@ -86,6 +86,34 @@ export const getMysteryForDay = (date: Date): MysteryType => {
   }
 };
 
+// Gregorian Easter (Meeus/Jones/Butcher)
+const easter = (y: number) => {
+  const a = y % 19, b = Math.floor(y / 100), c = y % 100;
+  const d = Math.floor(b / 4), e = b % 4, f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3), h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4), k = c % 4, l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const n = h + l - 7 * m + 114;
+  return new Date(y, Math.floor(n / 31) - 1, (n % 31) + 1);
+};
+const addDays = (d: Date, n: number) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n);
+
+export type Season = { id: 'lent' | 'advent'; mystery: MysteryType; name: { id: string; en: string } };
+
+// Lent: Ash Wednesday through Holy Saturday. Advent: 1st Sunday of Advent through Dec 24.
+export const getSeason = (date: Date): Season | null => {
+  const t = new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime();
+  const y = date.getFullYear();
+  const e = easter(y);
+  if (t >= addDays(e, -46).getTime() && t < e.getTime())
+    return { id: 'lent', mystery: 'sorrowful', name: { id: 'Masa Prapaskah', en: 'Lent' } };
+  const xmas = new Date(y, 11, 25);
+  const adventStart = addDays(xmas, -((xmas.getDay() || 7) + 21));
+  if (t >= adventStart.getTime() && t < xmas.getTime())
+    return { id: 'advent', mystery: 'joyful', name: { id: 'Masa Adven', en: 'Advent' } };
+  return null;
+};
+
 // Reading text and titles follow https://www.imankatolik.or.id/doarosario{gembira,sedih,mulia,terang}.html (Indonesian only).
 export const MYSTERY_DATA = {
   joyful: { id: 'joyful', name: { id: 'Peristiwa Gembira', en: 'Joyful Mysteries' }, decades: [
