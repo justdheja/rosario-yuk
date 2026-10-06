@@ -58,3 +58,6 @@ Desktop.ini
 .eslintcache
 .stylelintcache
 .vite/
+
+
+*.mp4
