@@ -39,7 +39,7 @@ export default function SettingsModal({ open, onClose, onSave, value, language }
           <button onClick={onClose} aria-label={id ? 'Tutup' : 'Close'} className="w-8 h-8 rounded-full hover:bg-stone-100 text-xl leading-none">×</button>
         </div>
         <p className="text-sm text-stone-500 mb-4">
-          {id ? 'Pilih peristiwa doa (mis. masa Prapaskah atau Adven).' : 'Choose the mysteries (e.g. for Lent or Advent).'}
+          {id ? 'Pilih peristiwa doa' : 'Choose the mysteries'}
         </p>
         {season && (
           <div className="flex items-center justify-between gap-3 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 mb-4 text-sm">
