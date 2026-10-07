@@ -51,7 +51,7 @@ export default function App() {
   if (loading) return <Loader />;
 
   const mystery = activeMystery ? MYSTERY_DATA[activeMystery] : null;
-  const currentSection = ROSARY_STRUCTURE[currentStep];
+  const currentSection = ROSARY_STRUCTURE[currentStep] ?? ROSARY_STRUCTURE[0]!;
 
   const handleDragEnd = (_: any, info: any) => {
     if (info.offset.x < -50 && currentStep < ROSARY_STRUCTURE.length - 1) {
@@ -134,11 +134,12 @@ export default function App() {
                 {renderPrayers(isAnnounce ? currentSection.prayers.filter((p) => p !== 'ourFather') : currentSection.prayers)}
 
                 {mystery && 'decade' in currentSection && isAnnounce && (() => {
-                  const decade = mystery.decades[currentSection.decade - 1];
+                  const decade = mystery.decades[Number(currentSection.decade) - 1];
+                  if (!decade) return null;
                   return (
                     <>
                       <p className="text-base font-serif text-amber-800 mb-4">
-                        {mystery.decades[currentSection.decade - 1].title[language]}
+                        {decade.title[language]}
                       </p>
                       <div className="text-left bg-amber-50 p-6 rounded-xl mb-8">
                         <p className="text-sm text-amber-700 mb-2">{decade.ref}</p>
